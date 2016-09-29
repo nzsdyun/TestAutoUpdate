@@ -1,0 +1,9 @@
+  {
+		"update_info": {
+			"version_code": 3,
+			"version_name": "TestAutoUpdate",
+			"apk_url": "http://www.emporia.com/apk/emporia_launcher.apk",
+			"update_content":"1. Bug fixes. \n 2. Increase the calling function",
+			"update_tips": "New feature updates"
+		}
+}
