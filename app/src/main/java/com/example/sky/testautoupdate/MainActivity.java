@@ -7,7 +7,7 @@ import android.view.View;
 import update.UpdateModule;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String UPDATE_URL = "";
+    private static final String UPDATE_URL = "https://github.com/nzsdyun/TestAutoUpdate/blob/master/app/extras/update.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
