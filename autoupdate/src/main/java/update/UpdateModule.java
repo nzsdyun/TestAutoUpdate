@@ -16,15 +16,15 @@ import com.example.sky.autoupdate.R;
  */
 public class UpdateModule {
 	private static UpdateModule sUpdateModule;
-	/** @see AutoUpdate */
-	private AutoUpdate mAutoUpdate;
+	/** @see AutoUpdateCheck */
+	private AutoUpdateCheck mAutoUpdateCheck;
 	private Handler mHandler = new Handler() {
 		@Override
 		public void handleMessage(Message msg) {
-			if (msg.what == mAutoUpdate.getQuerySuccess()) {
+			if (msg.what == mAutoUpdateCheck.getQuerySuccess()) {
 				Context context = (Context) msg.obj;
-				if (mAutoUpdate.isUpdate()) {
-					showUpdateUI(mAutoUpdate.getUpdateInfo(), context);
+				if (mAutoUpdateCheck.isUpdate()) {
+					showUpdateUI(mAutoUpdateCheck.getUpdateInfo(), context);
 				} else {
 					Toast.makeText(context, R.string.android_auto_update_toast_no_new_update, Toast.LENGTH_LONG)
 							.show();
@@ -46,7 +46,14 @@ public class UpdateModule {
 	}
 
 	public void checkUpdate(Context context, String serverUrl) {
-		mAutoUpdate = new AutoUpdate(context, serverUrl, mHandler);
+		checkUpdate(context, serverUrl, true);
+	}
+
+	public void checkUpdate(Context context, String serverUrl, boolean showProgressDialog) {
+		mAutoUpdateCheck = new AutoUpdateCheck(context);
+		if (mAutoUpdateCheck != null) {
+			mAutoUpdateCheck.check(serverUrl, mHandler, showProgressDialog);
+		}
 	}
 	/**
 	 * show update ui

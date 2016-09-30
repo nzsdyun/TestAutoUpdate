@@ -1,5 +1,10 @@
 package http;
 
+import android.app.Activity;
+import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,15 +16,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
-import android.app.Activity;
-import android.content.Context;
-import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * default use HttpUrlConnection request data, here are the get and post request
