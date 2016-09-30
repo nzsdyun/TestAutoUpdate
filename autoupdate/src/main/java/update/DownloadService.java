@@ -59,9 +59,9 @@ public class DownloadService extends IntentService {
 					.setRequestProperty("Accept-Encoding", "gzip, deflate");
 
 			urlConnection.connect();
-			long bytetotal = urlConnection.getContentLength();
-			long bytesum = 0;
-			int byteread = 0;
+			long byteTotal = urlConnection.getContentLength();
+			long byteSum = 0;
+			int byteRead = 0;
 			in = urlConnection.getInputStream();
 			File dir = StorageUtils.getCacheDirectory(this);
 			// TODO: this is a stupid
@@ -73,11 +73,11 @@ public class DownloadService extends IntentService {
 
 			int oldProgress = 0;
 
-			while ((byteread = in.read(buffer)) != -1) {
-				bytesum += byteread;
-				out.write(buffer, 0, byteread);
+			while ((byteRead = in.read(buffer)) != -1) {
+				byteSum += byteRead;
+				out.write(buffer, 0, byteRead);
 
-				int progress = (int) (bytesum * 100L / bytetotal);
+				int progress = (int) (byteSum * 100L / byteTotal);
 				// FIXME: if progress equals the schedule before, do not update,
 				// if the update too frequently, otherwise it will cause the
 				// interface card

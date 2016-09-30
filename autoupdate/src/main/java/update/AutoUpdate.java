@@ -2,6 +2,8 @@ package update;
 
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Handler;
+import android.util.Log;
 
 import http.DefaultHttpRequest;
 import http.IHttpRequest;
@@ -12,6 +14,7 @@ import http.ResponseListenerAdapter;
  * @author sky
  */
 public class AutoUpdate {
+	private  static final int QUERY_SUCCESS = 1;
 	private static final String TAG = AutoUpdate.class.getSimpleName();
 	private int mLocalVersion = -1;
 	/** http request interface,default use HttpUrlConnection */
@@ -19,7 +22,7 @@ public class AutoUpdate {
 	/** server update information */
 	private UpdateInfo mUpdateInfo;
 
-	public AutoUpdate(Context context, String serverUrl) {
+	public AutoUpdate(final Context context, String serverUrl, final Handler handler) {
 		try {
 			mLocalVersion = context.getPackageManager().getPackageInfo(
 					context.getPackageName(), 0).versionCode;
@@ -31,6 +34,7 @@ public class AutoUpdate {
 				@Override
 				public void success(String content) {
 					mUpdateInfo = ParseHandler.parseInfo(content);
+					handler.sendMessage(handler.obtainMessage(QUERY_SUCCESS, context));
 				}
 			});
 		} catch (NameNotFoundException e) {
@@ -53,6 +57,10 @@ public class AutoUpdate {
 	/** get server update information */
 	public UpdateInfo getUpdateInfo() {
 		return mUpdateInfo;
+	}
+	/** get query success */
+	public int getQuerySuccess() {
+		return QUERY_SUCCESS;
 	}
 
 }

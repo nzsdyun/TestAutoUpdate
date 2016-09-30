@@ -89,7 +89,7 @@ public class DefaultHttpRequest implements IHttpRequest {
 			if (requestMethod.equals(HttpConfiguration.REQUEST_GET)) {
 				if (params != null && params.size() > 0) {
 					String query = new StringBuffer("?").append(
-							joinParames(params)).toString();
+							joinParams(params)).toString();
 					url += URLEncoder.encode(query, mRequestEncode);
 				}
 			}
@@ -99,7 +99,7 @@ public class DefaultHttpRequest implements IHttpRequest {
 			if (requestMethod.equals(HttpConfiguration.REQUEST_POST)) {
 				if (params != null && params.size() > 0) {
 					connection.setDoOutput(true);
-					byte[] query = joinParames(params).getBytes();
+					byte[] query = joinParams(params).getBytes();
 					connection.setRequestProperty("Content-Type",
 							"application/x-www-form-urlencoded");
 					connection.setRequestProperty("Content-Length",
@@ -147,7 +147,7 @@ public class DefaultHttpRequest implements IHttpRequest {
 		return result.toString();
 	}
 
-	private String joinParames(Map<String, String> params) {
+	private String joinParams(Map<String, String> params) {
 		StringBuffer query = new StringBuffer();
 		for (Map.Entry<String, String> entry : params.entrySet()) {
 			String key = entry.getKey();
@@ -158,39 +158,28 @@ public class DefaultHttpRequest implements IHttpRequest {
 		return query.deleteCharAt(query.length() - 1).toString();
 	}
 
-	private String asyncCall(final String url, final String requestMethod,
+	private void asyncCall(final String url, final String requestMethod,
 			final ResponseListener responseCallback) {
-		return asyncCall(url, requestMethod, responseCallback, null);
+		asyncCall(url, requestMethod, responseCallback, null);
 	}
 
 	/**
-	 * aync call, use Executors, it returns a string
+	 * async call, use Executors
 	 * @param url String url
 	 * @param requestMethod http request method
 	 * @param responseCallback http responce call back
 	 * @param params request parameters
-	 * @return http responce result
 	 */
-	private String asyncCall(final String url, final String requestMethod,
+	private void asyncCall(final String url, final String requestMethod,
 			final ResponseListener responseCallback,
 			final Map<String, String> params) {
-		String result = null;
-		Future<String> resultFuture = mRequestService
-				.submit(new Callable<String>() {
-
-					@Override
-					public String call() throws Exception {
-						return sendHttpRequest(url, requestMethod,
+		mRequestService.execute(new Runnable() {
+			@Override
+			public void run() {
+				sendHttpRequest(url, requestMethod,
 								responseCallback, params);
-					}
-				});
-		try {
-			result = resultFuture.get();
-		} catch (Exception e) {
-			Log.e(TAG, "get async result failed:" + e.getMessage());
-			e.printStackTrace();
-		}
-		return result;
+			}
+		});
 	}
 
 	/** the HTTP response callback can not correctly, which run on the UI thread */
@@ -234,8 +223,8 @@ public class DefaultHttpRequest implements IHttpRequest {
 	}
 
 	@Override
-	public String asyncGet(String url, ResponseListener responseCallback) {
-		return asyncCall(url, HttpConfiguration.REQUEST_GET, responseCallback);
+	public void asyncGet(String url, ResponseListener responseCallback) {
+		asyncCall(url, HttpConfiguration.REQUEST_GET, responseCallback);
 	}
 
 	@Override
@@ -244,9 +233,9 @@ public class DefaultHttpRequest implements IHttpRequest {
 	}
 
 	@Override
-	public String asyncGet(String url, Map<String, String> params,
+	public void asyncGet(String url, Map<String, String> params,
 			ResponseListener responseCallback) {
-		return asyncCall(url, HttpConfiguration.REQUEST_GET, responseCallback, params);
+		asyncCall(url, HttpConfiguration.REQUEST_GET, responseCallback, params);
 	}
 
 	@Override
@@ -255,8 +244,8 @@ public class DefaultHttpRequest implements IHttpRequest {
 	}
 
 	@Override
-	public String asyncPost(String url, ResponseListener responseCallback) {
-		return asyncCall(url, HttpConfiguration.REQUEST_POST, responseCallback);
+	public void asyncPost(String url, ResponseListener responseCallback) {
+		asyncCall(url, HttpConfiguration.REQUEST_POST, responseCallback);
 	}
 
 	@Override
@@ -266,9 +255,9 @@ public class DefaultHttpRequest implements IHttpRequest {
 	}
 
 	@Override
-	public String asyncPost(String url, Map<String, String> params,
+	public void asyncPost(String url, Map<String, String> params,
 			ResponseListener responseCallback) {
-		return asyncCall(url, HttpConfiguration.REQUEST_POST, responseCallback, params);
+		asyncCall(url, HttpConfiguration.REQUEST_POST, responseCallback, params);
 	}
 
 }
