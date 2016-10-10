@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import com.example.sky.autoupdate.R;
 
+import http.NetworkUtils;
+
 /**
  * Automatic update module, you can use this class upgrade application
  * @author sky
@@ -78,15 +80,52 @@ public class UpdateModule {
 							public void onClick(DialogInterface dialog,
 									int which) {
 								dialog.dismiss();
-								// download
-								downloadApk(context, updateInfo.getApkUrl());
+								NetworkUtils.NetworkType networkType =  NetworkUtils.getNetworkType(context);
+								if (networkType == NetworkUtils.NetworkType.OTHER) {
+									showMobileNetDialog(updateInfo, context);
+								} else if (networkType == NetworkUtils.NetworkType.WIFI) {
+									// download
+									downloadApk(context, updateInfo.getApkUrl());
+								}
 							}
 						}).create();
 		updateDialog.setCancelable(false);
 		updateDialog.setCanceledOnTouchOutside(false);
 		updateDialog.show();
 	}
-	
+
+	/**
+	 * show warm dialog when network is not wifi
+	 * @param updateInfo @see UpdateInfo
+	 * @param context @see Context
+     */
+	private void showMobileNetDialog(final UpdateInfo updateInfo, final Context context) {
+		AlertDialog mobileNetDialog = new AlertDialog.Builder(context)
+				.setTitle(R.string.android_auto_update_mobile_dialog_tips)
+				.setMessage(R.string.android_auto_update_mobile_dialog_content)
+				.setNegativeButton(R.string.android_auto_update_mobile_dialog_btn_cancel,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+												int which) {
+								dialog.dismiss();
+							}
+						})
+				.setPositiveButton(R.string.android_auto_update_mobile_dialog_btn_download,
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog,
+												int which) {
+								dialog.dismiss();
+								downloadApk(context, updateInfo.getApkUrl());
+							}
+						}).create();
+		mobileNetDialog.setCancelable(false);
+		mobileNetDialog.setCanceledOnTouchOutside(false);
+		mobileNetDialog.show();
+	}
+
 	private void downloadApk(Context context, String downloadUrl) {
 		Intent intent = new Intent(context.getApplicationContext(),
 				DownloadService.class);
