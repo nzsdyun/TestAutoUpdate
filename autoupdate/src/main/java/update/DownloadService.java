@@ -64,10 +64,10 @@ public class DownloadService extends IntentService {
 			int byteRead = 0;
 			in = urlConnection.getInputStream();
 			File dir = StorageUtils.getCacheDirectory(this);
-//			// TODO: this is a stupid
-//			String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1,
-//					urlStr.length());
-			String apkName = urlConnection.getURL().getFile().toString();
+			// TODO: this is a stupid
+			String apkName = urlStr.substring(urlStr.lastIndexOf("/") + 1,
+					urlStr.length());
+//			String apkName = urlConnection.getURL().getFile().toString();
 			File apkFile = new File(dir, apkName);
 			out = new FileOutputStream(apkFile);
 			byte[] buffer = new byte[BUFFER_SIZE];
