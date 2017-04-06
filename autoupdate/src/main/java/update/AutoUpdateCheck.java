@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Handler;
+import android.util.Log;
 
 import com.example.sky.autoupdate.R;
 
@@ -16,7 +17,8 @@ import http.ResponseListenerAdapter;
  * @author sky
  */
 public class AutoUpdateCheck {
-	private  static final int QUERY_SUCCESS = 1;
+	private static final int QUERY_SUCCESS = 1;
+	private static final int QUERY_SUCCESS_AUTO = 2;
 	private static final String TAG = AutoUpdateCheck.class.getSimpleName();
 	private int mLocalVersion = -1;
 	/** http request interface,default use HttpUrlConnection */
@@ -40,6 +42,10 @@ public class AutoUpdateCheck {
 	}
 
 	public void check(String serverUrl, final Handler handler, boolean showProgressDialog) {
+		check(serverUrl, handler, showProgressDialog, getQuerySuccess());
+	}
+
+	public void check(String serverUrl, final Handler handler, boolean showProgressDialog, final int querySuccessFlag) {
 		//FIXME: add request check dialog
 		if (showProgressDialog) {
 			mProgressDialog = new ProgressDialog(mContext);
@@ -51,20 +57,31 @@ public class AutoUpdateCheck {
 
 			@Override
 			public void success(String content) {
+				Log.i("AutoUpdateCheck", "success:" + content);
 				if (mProgressDialog != null && mProgressDialog.isShowing()) {
 					mProgressDialog.dismiss();
 				}
 				mUpdateInfo = ParseHandler.parseInfo(content);
-				handler.sendMessage(handler.obtainMessage(QUERY_SUCCESS, mContext));
+				handler.sendMessageDelayed(handler.obtainMessage(querySuccessFlag, mContext), 500);
+			}
+
+			@Override
+			public void error(String cause) {
+				Log.i("AutoUpdateCheck", "error cause:" + cause);
+				if (mProgressDialog != null && mProgressDialog.isShowing()) {
+					mProgressDialog.dismiss();
+				}
+				super.error(cause);
 			}
 		});
+
 	}
 	/**
 	 * interpretation if need to update
 	 * @return If the current version number less than 
 	 * the version number of the server then returns true, otherwise false
 	 */
-	public boolean isUpdate() {
+	public synchronized boolean isUpdate() {
 		if (mUpdateInfo != null) {
 			int serverVersionCode = mUpdateInfo.getVersionCode();
 			if (serverVersionCode > 0 && mLocalVersion < serverVersionCode)
@@ -79,6 +96,10 @@ public class AutoUpdateCheck {
 	/** get query success */
 	public int getQuerySuccess() {
 		return QUERY_SUCCESS;
+	}
+	/** automatic mode query success flag */
+	public int getQuerySuccessAuto() {
+		return QUERY_SUCCESS_AUTO;
 	}
 
 }

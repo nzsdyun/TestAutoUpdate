@@ -3,9 +3,6 @@
     package="com.example.sky.testautoupdate"
     android:versionCode="1">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -20,8 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name="update.DownloadService"
+        <!-- auto update -->
+        <service android:name="update.DownloadManagerService"
             android:exported="true" />
+        <service android:name="util.AutoCheckUpdateService" />
+        <receiver android:name="util.AutoCheckUpdateReceiver" />
     </application>
 
 </manifest>

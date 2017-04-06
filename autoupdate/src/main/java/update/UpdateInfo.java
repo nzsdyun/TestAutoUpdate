@@ -10,19 +10,24 @@ public class UpdateInfo {
 	private String apkUrl;
 	private String updateContent;
 	private String updateTips;
+	private boolean debugVersion;
+	/** every day check update's number of times */
+	private int checkNumberOfTimes;
 
 	public UpdateInfo() {
 
 	}
 
 	public UpdateInfo(int versionCode, String versionName, String apkUrl,
-			String updateContent, String updateTips) {
+			String updateContent, String updateTips, boolean debugVersion, int checkNumberOfTimes) {
 		super();
 		this.versionCode = versionCode;
 		this.versionName = versionName;
 		this.apkUrl = apkUrl;
 		this.updateContent = updateContent;
 		this.updateTips = updateTips;
+		this.debugVersion = debugVersion;
+		this.checkNumberOfTimes = checkNumberOfTimes;
 	}
 
 	public int getVersionCode() {
@@ -64,5 +69,23 @@ public class UpdateInfo {
 	public void setUpdateTips(String updateTips) {
 		this.updateTips = updateTips;
 	}
+
+	public boolean isDebugVersion() {
+		return debugVersion;
+	}
+
+	public void setDebugVersion(boolean debugVersion) {
+		this.debugVersion = debugVersion;
+	}
+
+	public int getCheckNumberOfTimes() {
+		return checkNumberOfTimes;
+	}
+
+	public void setCheckNumberOfTimes(int checkNumberOfTimes) {
+		this.checkNumberOfTimes = checkNumberOfTimes;
+	}
+	
+	
 
 }

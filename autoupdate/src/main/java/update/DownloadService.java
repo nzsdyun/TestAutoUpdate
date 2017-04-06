@@ -1,5 +1,12 @@
 package update;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,12 +18,7 @@ import android.util.Log;
 
 import com.example.sky.autoupdate.R;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import util.SharedPreferecesUtil;
 
 public class DownloadService extends IntentService {
 	private static final int BUFFER_SIZE = 10 * 1024; // 8k ~ 32K
@@ -123,6 +125,11 @@ public class DownloadService extends IntentService {
 	}
 
 	private void installAPk(File apkFile) {
+		//FIXME: Re-initialize the local configuration
+		SharedPreferecesUtil.setLong(this, UpdateModuleConfiguration.UPDATE_INTERVAL_TIME,
+				UpdateModuleConfiguration.CHECK_MAX_UPDATE_INTERVAL_TIME, 0);
+		SharedPreferecesUtil.setLong(this, UpdateModuleConfiguration.UPDATE_INTERVAL_TIME,
+				UpdateModuleConfiguration.CHECK_LAST_UPDATE_TIME, 0);
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		// FIXME: if there is no set SDCard write access, or no SDCard, the apk
 		// kept in memory, need to grant access to the installation

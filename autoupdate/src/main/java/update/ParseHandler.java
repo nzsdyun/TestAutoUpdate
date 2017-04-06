@@ -18,7 +18,9 @@ public class ParseHandler {
 	 *			"version_name": "emporia_launcher",
 	 *			"apk_url": "http://www.emporia.com/apk/emporia_launcher.apk",
 	 *			"update_content":"1. Bug fixes. \n 2. Increase the calling function",
-	 *			"update_tips": "New feature updates"
+	 *			"update_tips": "New feature updates",
+	 *			"debug_version": false,
+	 *			"check_number_times": 5
 	 *		}  	
 	 *  }
 	 * </code></p>
@@ -39,6 +41,8 @@ public class ParseHandler {
 				updateInfo.setApkUrl(body.optString("apk_url"));
 				updateInfo.setUpdateContent(body.optString("update_content"));
 				updateInfo.setUpdateTips(body.optString("update_tips"));
+				updateInfo.setDebugVersion(body.optBoolean("debug_version"));
+				updateInfo.setCheckNumberOfTimes(body.optInt("check_number_times"));
 			}
 		} catch (JSONException e) {
 			Log.e(TAG, "use json parse content failed:" + e.getMessage());

@@ -1,5 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AutoUpdate</string>
+    <!-- TODO: for auto download -->
     <string name="android_auto_update_dialog_btn_download">立即下载</string>
     <string name="android_auto_update_dialog_btn_cancel">以后再说</string>
     <string name="android_auto_update_toast_no_new_update">已经是最新版本</string>
@@ -9,4 +11,6 @@
     <string name="android_auto_update_mobile_dialog_content">您在目前的网络环境下继续下载将可能会消耗手机流量，请确认是否继续下载？</string>
     <string name="android_auto_update_mobile_dialog_btn_cancel">取消下载</string>
     <string name="android_auto_update_mobile_dialog_btn_download">继续下载</string>
+    <string name="android_auto_update_notification_title">下载</string>
+    <string name="android_auto_update_notification_content">%1$s正在下载</string>
 </resources>

@@ -1,11 +1,17 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.sky.autoupdate">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
         android:supportsRtl="true">
-
+        <service android:name="update.DownloadManagerService"
+            android:exported="true" />
+        <service android:name="util.AutoCheckUpdateService" />
+        <receiver android:name="util.AutoCheckUpdateReceiver" />
     </application>
 
 </manifest>
