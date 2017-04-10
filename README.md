@@ -104,3 +104,13 @@ every day check update number of times is 4.
 </code>
 
 >note: meta-date's name must is "update_configuration_url", the value is server update configuration path.
+
+#### Update strategy
+> the update strategy has two forms of support, one is the daily inspection time period, one is the check update interval.
+
+1. Check the time period every day. This is through the application of the internal code <code>setStartCheckTime</code> and <code>setEndCheckTime</code> to specify what time during the day to check the update operation. the default is 10:00 to 11:00 this period of time to check, while the time period to check the number of updates also given a limit, the default number is 4, of course, you can through the server's json configuration file "check_number_times" Field to change this limit.
+
+2. Check the interval of updates is the interval between the update dialog box and the next prompt update dialog box when the server has an updated apk. This is constrained by the setCheckUpdateIntervalTime and setMaxCheckUpdateIntervalTime methods of the application's internal code. Where the time interval for each check update is not constant, but incremented in multiples, such as the first check interval for the interval you set by setCheckUpdateIntervalTime, when the update dialog box appears, when you have not selected to download the update immediately , But choose to say later, then this time interval will be in the form of multiple increments.
+> note: The setMaxCheckUpdateIntervalTime method determines the maximum interval for checking updates, that is, when the time interval is exceeded, the next update check will check whether the server is updated and defaults to one week.
+
+3. These two forms of renewal are mutually influential, and decide whether or not to really check whether the server is updated is to satisfy both of these conditions. The first form takes precedence over the second form, but the second form in turn affects the first form. For example: when you set the daily 10:00 to 11:00 check update, not to say that this time within the time period will certainly go to the server to check. This depends on the current application of the check update interval. If you have rejected multiple checks, resulting in an update interval of more than one day (24 hours), then the next 10:00 to 11:00 The time period will not check the update.
