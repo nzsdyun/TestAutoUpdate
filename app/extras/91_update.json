@@ -3,17 +3,15 @@
 
 		"update_info": {
 
-			"version_code": 3,
+			"versionCode": 3,
 
-			"version_name": "TestAutoUpdate",
+			"versionName": "91Porn",
 
-			"apk_url": "https://github.com/nzsdyun/TestAutoUpdate/raw/master/app/extras/android_auto_apk_3.apk",
+			"apkDownloadUrl": "https://github.com/nzsdyun/TestAutoUpdate/raw/master/app/extras/android_auto_apk_3.apk",
 
-			"update_content":"1. Bug fixes.\n2. Increase the calling function",
-
-			"update_tips": "New feature updates"
+			"updateMessage":"1. Bug fixes.\n2. Increase the calling function"
 
 		},
-    "91_video_address": "http://91.91pspace/index.php/"
+	  	"91_video_address": "http://91.91pspace/index.php/"
 
 }
